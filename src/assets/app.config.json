@@ -1,0 +1,6 @@
+{
+    "isProduction": false,
+    "apiBaseUrl":{
+        "falcon":"https://findfalcone.herokuapp.com/"
+    }
+}
