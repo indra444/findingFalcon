@@ -36,9 +36,17 @@ export class PlanetsComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngOnChanges() {
+    if (this.reset) {
+      this.onReset();
+    }
+  }
+
   @Input() public planets: Planet[] = [];
   @Input() public vehicles: Vehicle[] = [];
   @Input() public destination: number = 0;
+  @Input() public selectedDestination: boolean = false;
+  @Input() public reset: boolean = false;
 
   model: UserSelection = {
     destination: -1,
@@ -83,5 +91,23 @@ export class PlanetsComponent implements OnInit {
     if (this.model.planet != '' && this.model.vehicle != '') {
       this.onUserSelectionEvent.emit(this.model);
     }
+  }
+
+  onReset() {
+    this.model = {
+      destination: -1,
+      planet: '',
+      vehicle: '',
+    };
+  }
+
+  disableOption(vehicle: Vehicle): boolean {
+    return (
+      vehicle.total_no <= 0 ||
+      this.model.planet == '' ||
+      this.model.planet == null ||
+      vehicle.max_distance <
+        this.planets.filter((x) => x.name === this.model.planet)[0]?.distance
+    );
   }
 }

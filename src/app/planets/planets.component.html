@@ -1,4 +1,4 @@
-<diV class="body">
+<diV class="body" [class.disabledSelection]="!selectedDestination">
     <label for="typeahead-focus">Destination {{destination + 1}}</label>
     <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="model.planet" [ngbTypeahead]="search"
         (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value);" (ngModelChange)="onSelection()"
@@ -7,13 +7,15 @@
 
     <div class="btn-group">
         <div *ngFor="let v of vehicles;">
-            <label>
-                <input type="radio" name="{{'vehicle-'+destination}}" value="{{v.name}}" [(ngModel)]="model.vehicle" (ngModelChange)="onSelection()"> {{v.name }}({{v.total_no}})
+            <label [class.disabledSelection]="disableOption(v)">
+                <input type="radio" 
+                name="{{'vehicle-'+destination}}" 
+                value="{{v.name}}"
+                [(ngModel)]="model.vehicle" (ngModelChange)="onSelection()"> 
+                {{v.name }}({{v.total_no}})
             </label>
         </div>
     </div>
 
     <hr>
-
-    {{model | json}}
 </diV>

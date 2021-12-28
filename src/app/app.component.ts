@@ -16,15 +16,24 @@ export class AppComponent {
   vehicles: Vehicle[] = [];
 
   userSelections: UserSelection[] = [];
+  availablePlanets: Planet[] = [];
+  availableVehicles: Vehicle[] = [];
+  timeTaken: number = 0;
+  resetChild: boolean = false;
+  currentDestination: number = -1;
 
   constructor(private falconService: FalconService) {
     falconService.getPlanets().subscribe((response) => {
       this.planets = response;
+      this.availablePlanets = response;
     });
 
     falconService.getVehicles().subscribe((response) => {
       this.vehicles = response;
+      this.availableVehicles = response;
     });
+
+    this.currentDestination++;
   }
 
   onUserSelection(userSelection: UserSelection) {
@@ -37,6 +46,11 @@ export class AppComponent {
     } else {
       this.userSelections.push(userSelection);
     }
+
+    this.currentDestination++;
+    this.updateAvailableVehicles(userSelection);
+    this.updateAvailablePlanets(userSelection);
+    this.updateTimeTaken();
   }
 
   disableSelection(destinationIndex: number) {
@@ -50,16 +64,34 @@ export class AppComponent {
     return false;
   }
 
-  // getAvailableVehicles() {
-  //   let availableVehicles: Vehicle[] = [];
-  //   this.vehicles.forEach((x) => {
-  //     let clonedVehicle = Object.assign({}, x);
-  //     clonedVehicle.total_no -= this.userSelections.filter(
-  //       (y) => y.vehicle == x.name
-  //     )?.length;
-  //     availableVehicles.push(clonedVehicle);
-  //   });
+  updateAvailableVehicles(userSelection: UserSelection) {
+    this.availableVehicles
+      .filter((x) => x.name === userSelection.vehicle)
+      .map((x) => {
+        return --x.total_no;
+      });
+  }
 
-  //   return availableVehicles;
-  // }
+  updateAvailablePlanets(userSelection: UserSelection) {
+    this.availablePlanets = this.availablePlanets.filter(
+      (x) => x.name !== userSelection.planet
+    );
+  }
+
+  updateTimeTaken() {
+    this.userSelections.forEach((x) => {
+      let planet = this.planets.filter((p) => p.name === x.planet)[0];
+      let vehicle = this.vehicles.filter((v) => v.name === x.vehicle)[0];
+
+      this.timeTaken += planet.distance / vehicle.speed;
+    });
+  }
+
+  resetSelection($event: boolean) {
+    this.resetChild = true;
+    this.userSelections = [];
+    this.availablePlanets = this.planets;
+    this.availableVehicles = this.vehicles;
+    this.timeTaken = 0;
+  }
 }
