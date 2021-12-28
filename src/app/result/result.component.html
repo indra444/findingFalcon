@@ -1,0 +1,29 @@
+<div *ngIf="isRouteData && isSuccess">
+    <div class="d-flex justify-content-center pt-1">
+        <h4> <span class="success">Congratulations!</span> on Finding Falcone. King Shan is mighty pleased</h4>
+    </div>
+    
+    <div class="d-flex justify-content-center pt-1">
+        <h4>Time taken: {{timeTaken}}</h4>
+    </div>
+    
+    <div class="d-flex justify-content-center pt-1">
+        <h4>Planet found: {{planetName}}</h4>
+    </div>
+</div>
+
+<div *ngIf="isRouteData &&!isSuccess">
+    <div class="d-flex justify-content-center pt-1">
+        <h4><span class="failed">Failed!</span> Prepare to face the wrath of King Shan.</h4>
+    </div>
+</div>
+
+<div *ngIf="!isRouteData">
+    <div class="d-flex justify-content-center pt-1">
+        <h4>No results found.</h4>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center pt-1">
+    <button class="btn btn-primary" [routerLink]="'/home'">Try Again</button>
+</div>

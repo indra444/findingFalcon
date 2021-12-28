@@ -9,6 +9,8 @@ import { PlanetsComponent } from './planets/planets.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppConfigService } from './shared/services/app-config.service';
+import { ResultComponent } from './result/result.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { AppConfigService } from './shared/services/app-config.service';
     HeaderComponent,
     FooterComponent,
     PlanetsComponent,
+    ResultComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

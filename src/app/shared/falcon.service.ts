@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { FindRequest } from './models/find.request.model';
 import { FindResponse } from './models/find.response.model';
 import { Planet } from './models/planet.model';
+import { TokenResponse } from './models/token.response.model';
 import { Vehicle } from './models/vehicle.model';
 import { AppConfigService } from './services/app-config.service';
 import { BaseHttpClientService } from './services/base-http-client.service';
@@ -29,9 +30,9 @@ export class FalconService extends BaseHttpClientService {
     return this.get<Vehicle[]>(url);
   }
 
-  getToken(): Observable<string> {
+  getToken(): Observable<TokenResponse> {
     let url = this.getServiceUrl('token');
-    return this.post<string>(url);
+    return this.post<TokenResponse>(url);
   }
 
   findFalcon(requestBody: FindRequest): Observable<FindResponse> {
