@@ -6,7 +6,7 @@ Bootstrap css is used for general styling and autocomplete implementation.
 
 ## Build
 
-Run `npm install ` to install all dependencies.
+Run `npm install` to install all dependencies.
 
 ## Development server
 
