@@ -9,10 +9,4 @@ export class HeaderComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  @Output() onReset: EventEmitter<boolean> = new EventEmitter();
-
-  resetClick() {
-    this.onReset.emit(true);
-  }
 }

@@ -105,7 +105,6 @@ export class PlanetsComponent implements OnInit {
     return (
       vehicle.total_no <= 0 ||
       this.model.planet == '' ||
-      this.model.planet == null ||
       vehicle.max_distance <
         this.planets.filter((x) => x.name === this.model.planet)[0]?.distance
     );

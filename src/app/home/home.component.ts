@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { UserSelection } from '../planets/planets.component';
-import { FalconService } from '../shared/falcon.service';
+import { FalconService } from '../shared/services/falcon.service';
 import { FindRequest } from '../shared/models/find.request.model';
 import { FindResult } from '../shared/models/find.response.model';
 import { Planet } from '../shared/models/planet.model';
@@ -58,17 +58,6 @@ export class HomeComponent implements OnInit {
     this.updateTimeTaken();
   }
 
-  disableSelection(destinationIndex: number) {
-    let destinationSelection = this.userSelections.filter(
-      (x) => x.destination == destinationIndex
-    );
-    if (destinationSelection?.length > 0) {
-      return true;
-    }
-
-    return false;
-  }
-
   updateAvailableVehicles(userSelection: UserSelection) {
     this.availableVehicles = this.availableVehicles.map((x) => {
       if (x.name === userSelection.vehicle) {
@@ -105,6 +94,9 @@ export class HomeComponent implements OnInit {
     this.timeTaken = 0;
     this.currentDestination = 0;
     this.resetChild = true;
+    setTimeout(() => {
+      this.resetChild = false;
+    }, 200);
   }
 
   findFalcon() {
