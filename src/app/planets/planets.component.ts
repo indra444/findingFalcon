@@ -57,6 +57,8 @@ export class PlanetsComponent implements OnInit {
   @Output() onUserSelectionEvent: EventEmitter<UserSelection> =
     new EventEmitter();
 
+  //#region from ng-bootstrap as recommended
+
   @ViewChild('instance', { static: true })
   instance!: NgbTypeahead;
   focus$ = new Subject<string>();
@@ -85,6 +87,8 @@ export class PlanetsComponent implements OnInit {
       )
     );
   };
+
+  //#endregion
 
   onSelection() {
     this.model.destination = this.destination;
