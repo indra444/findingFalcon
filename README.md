@@ -1,14 +1,17 @@
 # FindingFalcon
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
+## Feature and implementation
 
-Bootstrap css is used for general styling and autocomplete implementation.
+- This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
 
-## Build
+- **ng-bootstrap** is used for styling , **autocomplete dropdown** and **modal dialog**.
+- **app.config.json** contains application configuration such as api base urls.
+
+## Installing dependencies
 
 Run `npm install` to install all dependencies.
 
-## Development server
+## Running in development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { AppConfigService } from './app-config.service';
 
@@ -14,7 +15,7 @@ describe('AppConfigService', () => {
         {
           provide: HttpClient,
           useValue: {
-            get: jasmine.createSpy(),
+            get: jasmine.createSpy().and.returnValue(of(1)),
           },
         },
       ],

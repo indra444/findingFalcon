@@ -7,10 +7,12 @@ import { FooterComponent } from './common/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PlanetsComponent } from './planets/planets.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppConfigService } from './shared/services/app-config.service';
 import { ResultComponent } from './result/result.component';
 import { HomeComponent } from './home/home.component';
+import { ModalComponent } from './common/modal/modal.component';
+import { HttpErrorInterceptor } from './shared/services/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { HomeComponent } from './home/home.component';
     PlanetsComponent,
     ResultComponent,
     HomeComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,8 @@ import { HomeComponent } from './home/home.component';
       deps: [AppConfigService],
       multi: true,
     },
+    HttpErrorInterceptor,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

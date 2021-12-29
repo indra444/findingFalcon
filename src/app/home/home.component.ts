@@ -7,6 +7,8 @@ import { FindRequest } from '../shared/models/find.request.model';
 import { FindResult } from '../shared/models/find.response.model';
 import { Planet } from '../shared/models/planet.model';
 import { Vehicle } from '../shared/models/vehicle.model';
+import { ModalObserver } from '../common/modal/modal.observer';
+import { InterceptorMessageService } from '../shared/services/InterceptorMessageService';
 
 @Component({
   selector: 'app-home',
@@ -24,8 +26,15 @@ export class HomeComponent implements OnInit {
   resetChild: boolean = false;
   currentDestination: number = -1;
   resultsLoading: boolean = false;
+  openErrorModel: boolean = false;
+  errorMessage: any = null;
 
-  constructor(private falconService: FalconService, private router: Router) {
+  constructor(
+    private falconService: FalconService,
+    private router: Router,
+    private modalObserver: ModalObserver,
+    private messageService: InterceptorMessageService
+  ) {
     falconService.getPlanets().subscribe((response) => {
       this.planets = response;
       this.availablePlanets = [...this.planets];
@@ -36,26 +45,25 @@ export class HomeComponent implements OnInit {
       this.availableVehicles = [...this.vehicles];
     });
 
+    messageService.isError.subscribe((error: any) => {
+      if (error) {
+        this.errorMessage = error;
+        this.resultsLoading = false;
+        this.modalObserver.open.next(true);
+      }
+    });
+
     this.currentDestination++;
   }
 
   ngOnInit(): void {}
 
   onUserSelection(userSelection: UserSelection) {
-    let index = this.userSelections.findIndex(
-      (x) => x.destination == userSelection.destination
-    );
-
-    if (index >= 0) {
-      this.userSelections[index] = userSelection;
-    } else {
-      this.userSelections.push(userSelection);
-    }
-
-    this.currentDestination++;
+    this.userSelections.push(userSelection);
     this.updateAvailableVehicles(userSelection);
     this.updateAvailablePlanets(userSelection);
     this.updateTimeTaken();
+    this.currentDestination++;
   }
 
   updateAvailableVehicles(userSelection: UserSelection) {

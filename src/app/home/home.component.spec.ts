@@ -1,6 +1,6 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { UserSelection } from '../planets/planets.component';
 import { FindRequest } from '../shared/models/find.request.model';
 import { FindResponse } from '../shared/models/find.response.model';
@@ -8,6 +8,7 @@ import { Planet } from '../shared/models/planet.model';
 import { TokenResponse } from '../shared/models/token.response.model';
 import { Vehicle } from '../shared/models/vehicle.model';
 import { FalconService } from '../shared/services/falcon.service';
+import { InterceptorMessageService } from '../shared/services/InterceptorMessageService';
 import { HomeComponent } from './home.component';
 
 let falconServiceStub: Partial<FalconService>;
@@ -20,9 +21,14 @@ class MockRouter {
   };
 }
 
+class MockMessageService {
+  isError = new BehaviorSubject<any>(null);
+}
+
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let messageService = new MockMessageService();
 
   beforeEach(async () => {
     falconServiceStub = {
@@ -58,6 +64,10 @@ describe('HomeComponent', () => {
           provide: Router,
           useClass: MockRouter,
         },
+        {
+          provide: InterceptorMessageService,
+          useValue: messageService,
+        },
       ],
     }).compileComponents();
 
@@ -77,7 +87,7 @@ describe('HomeComponent', () => {
   it('onUserSelection', () => {
     component.currentDestination = 1;
     component.userSelections = [
-      { destination: 1, planet: 'abc', vehicle: 'def' },
+      { destination: 1, planet: 'Jupiter', vehicle: 'tram' },
     ];
     component.planets = [
       { name: 'Pluto', distance: 300 },
@@ -91,9 +101,11 @@ describe('HomeComponent', () => {
     let userSelection: UserSelection = {
       planet: 'Pluto',
       vehicle: 'bus',
-      destination: 1,
+      destination: 2,
     };
     component.onUserSelection(userSelection);
+
+    expect(component.userSelections.length).toEqual(2);
 
     expect(component.availablePlanets.length).toEqual(
       component.planets.length - 1
@@ -110,7 +122,7 @@ describe('HomeComponent', () => {
         .total_no - 1
     );
 
-    expect(component.timeTaken).toEqual(300 / 50);
+    expect(component.timeTaken).toEqual(300 / 50 + 250 / 20);
   });
 
   it('reset selection', () => {
@@ -133,4 +145,11 @@ describe('HomeComponent', () => {
 
     expect(router.navigateByUrl).toHaveBeenCalled();
   }));
+
+  it('when error occurs', () => {
+    messageService.isError.next(true);
+
+    expect(component.errorMessage).toBeTrue();
+    expect(component.resultsLoading).toBeFalse();
+  });
 });
