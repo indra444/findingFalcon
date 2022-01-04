@@ -26,3 +26,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Code coverage
 
 Run `ng test --no-watch --code-coverage` to generate code coverage
+
+## Github Pages
+
+Run `ng deploy --base-href=/findingFalcon/` to deploy to GH pages.
